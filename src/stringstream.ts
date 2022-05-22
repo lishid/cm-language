@@ -30,6 +30,7 @@ export class StringStream {
     private tabSize: number,
     /// The current indent unit size.
     public indentUnit: number,
+    public lookAhead: (n: number) => string,
     private overrideIndent?: number
   ) {}
 
