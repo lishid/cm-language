@@ -13,8 +13,8 @@ export {HighlightStyle, syntaxHighlighting, highlightingFor, TagStyle, defaultHi
 
 export {bracketMatching, Config, matchBrackets, MatchResult, bracketMatchingHandle} from "./matchbrackets"
 
-export {StreamLanguage, StreamParser} from "./stream-parser"
+export {StreamLanguage, StreamParser, ignoreSpellcheckToken, lineHighlighter, tokenClassNodeProp, lineClassNodeProp} from "./stream-parser"
 
-export {StringStream} from "@codemirror/streamparser"
+export {StringStream} from "./stringstream"
 
 export {bidiIsolates} from "./isolate"
