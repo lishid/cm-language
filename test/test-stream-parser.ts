@@ -1,7 +1,7 @@
 import ist from "ist"
 import {EditorState} from "@codemirror/state"
 import {Tag} from "@lezer/highlight"
-import {StreamLanguage, syntaxTree, getIndentation, Language} from "@codemirror/language"
+import {StreamLanguage, StringStream, syntaxTree, getIndentation, Language} from "@codemirror/language"
 import {SyntaxNode} from "@lezer/common"
 
 let startStates = 0, keywords = ["if", "else", "return"]
@@ -123,5 +123,35 @@ describe("StreamLanguage", () => {
       tokenTable: {foo: tag}
     })
     ist(lang.parser.parse("hello").toString(), "Document(foo)")
+  })
+})
+
+describe("StringStream", () => {
+  // Modes like Obsidian's markdown overwrite the stream's tab size
+  // on every token, so every method must see the changed value.
+  it("uses an overwritten tab size for indentation and column", () => {
+    let stream = new StringStream("\t- x", 2, 2, () => "")
+    ;(stream as any).tabSize = 4
+    ist(stream.indentation(), 4)
+    stream.pos = stream.start = 1
+    ist(stream.column(), 4)
+  })
+
+  it("uses an overwritten tab size for a hidden prefix", () => {
+    let stream = new StringStream("\t\t- x", 2, 2, () => "")
+    ;(stream as any).tabSize = 4
+    let sol = false, indentation = -1, column = -1
+    stream.hideFirstChars(1, () => {
+      stream.pos = stream.start = 1
+      sol = stream.sol()
+      indentation = stream.indentation()
+      stream.pos = stream.start = 2
+      column = stream.column()
+      return null
+    })
+    ist(sol)
+    ist(indentation, 4)
+    ist(column, 4)
+    ist(stream.lineStart, 0)
   })
 })
