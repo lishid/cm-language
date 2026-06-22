@@ -103,16 +103,23 @@ export const foldState = StateField.define<DecorationSet>({
     if (tr.isUserEvent("delete"))
       tr.changes.iterChangedRanges((fromA, toA) => folded = clearTouchedFolds(folded, fromA, toA))
     folded = folded.map(tr.changes)
+    let rangesToFold = []
     for (let e of tr.effects) {
       if (e.is(foldEffect) && !foldExists(folded, e.value.from, e.value.to)) {
-        let {preparePlaceholder} = tr.state.facet(foldConfig)
-        let widget = !preparePlaceholder ? foldWidget :
-          Decoration.replace({widget: new PreparedFoldWidget(preparePlaceholder(tr.state, e.value))})
-        folded = folded.update({add: [widget.range(e.value.from, e.value.to)]})
+        rangesToFold.push(e.value)
       } else if (e.is(unfoldEffect)) {
         folded = folded.update({filter: (from, to) => e.value.from != from || e.value.to != to,
                                 filterFrom: e.value.from, filterTo: e.value.to})
       }
+    }
+    if (rangesToFold.length) {
+      let {preparePlaceholder} = tr.state.facet(foldConfig)
+      let decorations = rangesToFold.map(value => {
+        let widget = !preparePlaceholder ? foldWidget :
+          Decoration.replace({widget: new PreparedFoldWidget(preparePlaceholder(tr.state, value))})
+        return widget.range(value.from, value.to)
+      })
+      folded = folded.update({add: decorations})
     }
     // Clear folded ranges that cover the selection head
     if (tr.selection) folded = clearTouchedFolds(folded, tr.selection.main.head)
