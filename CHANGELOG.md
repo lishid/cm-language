@@ -1,3 +1,9 @@
+## 6.13.0 (2026-10-07)
+
+### New features
+
+Split some types out to the new @codemirror/streamparser package. Re-export them from this one.
+
 ## 6.12.4 (2026-06-25)
 
 ### Bug fixes
