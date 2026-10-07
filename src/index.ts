@@ -15,6 +15,6 @@ export {bracketMatching, Config, matchBrackets, MatchResult, bracketMatchingHand
 
 export {StreamLanguage, StreamParser} from "./stream-parser"
 
-export {StringStream} from "./stringstream"
+export {StringStream} from "@codemirror/streamparser"
 
 export {bidiIsolates} from "./isolate"
