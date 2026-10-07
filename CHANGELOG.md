@@ -1,3 +1,9 @@
+## 6.13.1 (2026-10-07)
+
+### Bug fixes
+
+Properly declare @codemirror/streamparser as a dependency.
+
 ## 6.13.0 (2026-10-07)
 
 ### New features
