@@ -415,7 +415,7 @@ export class ParseContext {
 
   /// @internal
   changes(changes: ChangeDesc, newState: EditorState) {
-    let {fragments, tree, treeLen, viewport, skipped} = this
+    let {fragments, tree, treeLen, viewport} = this, skipped = this.skipped.slice()
     this.takeTree()
     if (!changes.empty) {
       let ranges: ChangedRange[] = []
