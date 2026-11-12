@@ -225,7 +225,7 @@ class Parse<State> implements PartialParse {
     let end = Math.min(parseEnd, this.chunkStart + C.ChunkSize)
     // Parse just a little bit more than the viewport.
     let overbuffer = 5000;
-    let viewportEnd = context.viewport.to + overbuffer;
+    let viewportEnd = context ? context.viewport.to + overbuffer : Infinity;
     if (context) end = Math.min(end, viewportEnd)
     // parseNext is a temporary flag that prevents the chunking mechanism from stopping mid-parse
     // of a critical long section of text. Trades off performance for correctness.
